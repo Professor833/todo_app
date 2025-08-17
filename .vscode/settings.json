@@ -1,0 +1,36 @@
+{
+  "python.analysis.typeCheckingMode": "off",
+  "python.linting.enabled": false,
+  "python.linting.pylintEnabled": false,
+  "python.linting.mypyEnabled": false,
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.extraPaths": [],
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "python.sortImports.args": [
+    "--multi-line=3",
+    "--trailing-comma",
+    "--force-grid-wrap=0",
+    "--combine-as",
+    "--line-width=88"
+  ],
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "isort.args": [
+    "--multi-line=3",
+    "--trailing-comma",
+    "--force-grid-wrap=0",
+    "--combine-as",
+    "--line-width=88",
+    "--profile=black"
+  ],
+  "python.defaultInterpreterPath": "./venv/bin/python"
+}
