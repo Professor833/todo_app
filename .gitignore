@@ -9,3 +9,5 @@ venv
 *.db
 
 sql_queries/
+
+alembic/versions/

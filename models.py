@@ -14,6 +14,7 @@ class Users(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
     role = Column(String, default="user")
+    phone_number = Column(String(length=15), nullable=True)
 
 
 class TodoItem(Base):
