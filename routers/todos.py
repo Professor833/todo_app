@@ -93,3 +93,25 @@ async def update_todo(
     db.commit()
     db.refresh(todo)
     return todo
+
+
+@router.delete("/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_todo(
+    user: user_dependency,
+    db: db_dependency,
+    todo_id: int = Path(gt=0),
+):
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    todo = (
+        db.query(models.TodoItem)
+        .filter(
+            models.TodoItem.id == todo_id, models.TodoItem.owner_id == user.get("id")
+        )
+        .first()
+    )
+    if todo is None:
+        raise HTTPException(status_code=404, detail="Todo item not found")
+
+    db.delete(todo)
+    db.commit()
