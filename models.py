@@ -1,5 +1,6 @@
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+
 from database import Base
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 
 
 class Users(Base):
@@ -22,8 +23,8 @@ class TodoItem(Base):
     title = Column(String, index=True)
     description = Column(String, index=True)
     priority = Column(Integer, default=1)
-    completed = Column(Boolean, default=False)
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    completed = Column(Boolean, default=False)
 
     def __repr__(self):
         return f"<TodoItem(id={self.id}, title={self.title}, completed={self.completed}, priority={self.priority})>"
