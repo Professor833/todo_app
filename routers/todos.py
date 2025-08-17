@@ -25,7 +25,19 @@ class TodoRequest(BaseModel):
     completed: bool = Field(default=False)
 
 
-@router.get("/", status_code=status.HTTP_200_OK)
+class TodoResponse(BaseModel):
+    id: int
+    title: str
+    description: Optional[str]
+    priority: int
+    completed: bool
+    owner_id: Optional[int]
+
+    class Config:
+        from_attributes = True  # This allows conversion from SQLAlchemy models
+
+
+@router.get("/", status_code=status.HTTP_200_OK, response_model=list[TodoResponse])
 def read_all(user: user_dependency, db: db_dependency):
     todos = (
         db.query(models.TodoItem)
@@ -35,7 +47,7 @@ def read_all(user: user_dependency, db: db_dependency):
     return todos
 
 
-@router.get("/{todo_id}", status_code=status.HTTP_200_OK)
+@router.get("/{todo_id}", status_code=status.HTTP_200_OK, response_model=TodoResponse)
 async def read_todo(
     user: user_dependency,
     db: db_dependency,
@@ -55,7 +67,7 @@ async def read_todo(
     return todo
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=TodoResponse)
 async def create_todo(
     user: user_dependency, todo_request: TodoRequest, db: db_dependency
 ):
@@ -68,7 +80,7 @@ async def create_todo(
     return new_todo
 
 
-@router.put("/{todo_id}", status_code=status.HTTP_200_OK)
+@router.put("/{todo_id}", status_code=status.HTTP_200_OK, response_model=TodoResponse)
 async def update_todo(
     db: db_dependency,
     user: user_dependency,

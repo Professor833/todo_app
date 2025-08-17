@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from typing import Annotated, cast
+from typing import Annotated, Optional, cast
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -77,7 +77,10 @@ class UserResponse(BaseModel):
     last_name: str
     role: str
     is_active: bool
-    message: str
+    message: Optional[str] = None
+
+    class Config:
+        from_attributes = True  # This allows conversion from SQLAlchemy models
 
 
 class TokenResponse(BaseModel):
@@ -162,5 +165,7 @@ async def get_token(
     if not user.is_active:
         raise AuthenticationException("Account is disabled")
 
-    access_token = create_access_token(data={"sub": user.username, "user_id": user.id})
+    access_token = create_access_token(
+        data={"sub": user.username, "user_id": user.id, "role": user.role}
+    )
     return {"access_token": access_token, "token_type": "bearer"}
